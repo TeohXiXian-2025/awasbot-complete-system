@@ -2,3 +2,6 @@
 .cache/
 .cache/
 .gemini/
+.env
+__pycache__/
+*.png
