@@ -1,0 +1,34 @@
+2026-02-24 11:15:36.825 [info] Extension host with pid 1450 started
+2026-02-24 11:15:36.837 [info] Lock '/home/xixianteoh/.codeoss/data/User/workspaceStorage/-3917acb9/vscode.lock': Lock acquired.
+2026-02-24 11:15:37.305 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-02-24 11:15:37.307 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-02-24 11:15:37.307 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onLanguage:python'
+2026-02-24 11:15:37.308 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onTerminalProfile:cloudshell.default'
+2026-02-24 11:15:38.928 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-02-24 11:15:39.135 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-02-24 11:15:39.136 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-02-24 11:15:39.257 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-02-24 11:15:39.257 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-02-24 11:15:39.257 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-02-24 11:15:40.059 [info] Eager extensions activated
+2026-02-24 11:15:40.060 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-02-24 11:15:40.060 [info] ExtensionService#_doActivateExtension googlecloudtools.cloudcode, startup: false, activationEvent: 'onStartupFinished'
+2026-02-24 11:15:40.061 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-02-24 11:15:40.061 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-02-24 11:15:40.062 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-02-24 11:15:43.112 [info] ExtensionService#_doActivateExtension vscode.terminal-suggest, startup: false, activationEvent: 'onTerminalShellIntegration:*'
+2026-02-24 11:15:47.242 [error] [ms-python.python] provider FAILED
+2026-02-24 11:15:47.269 [error] Error: ValueError: `column` parameter (28) is not in a valid range (0-27) for line 129 ('# 🔘 GUARDIAN BUTTON HANDLER\n').
+    at ae (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2018252)
+    at oe (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2016212)
+    at Immediate.<anonymous> (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2012506)
+    at processImmediate (node:internal/timers:485:21)
+2026-02-24 11:57:09.359 [error] [ms-python.python] provider FAILED
+2026-02-24 11:57:09.359 [error] Error: ValueError: `column` parameter (62) is not in a valid range (0-61) for line 570 ('                    f"🚨 **SOS 警报**: 发现高风险链接！{url_to_check}"))\n').
+    at ae (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2018252)
+    at oe (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2016212)
+    at Immediate.<anonymous> (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2012506)
+    at processImmediate (node:internal/timers:485:21)
+2026-02-24 12:07:57.380 [info] Extension host terminating: renderer disconnected for too long (2)
+2026-02-24 12:07:57.382 [info] Lock '/home/xixianteoh/.codeoss/data/User/workspaceStorage/-3917acb9/vscode.lock': Marking the lockfile as scheduled to be released in 6000 ms.
+2026-02-24 12:07:57.456 [info] Extension host with pid 1450 exiting with code 0

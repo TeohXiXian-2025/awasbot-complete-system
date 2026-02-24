@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwasBank - Secure Portal</title>
+    
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeRHHUsAAAAALXo49EBAzoJOAxoJTykL3hxsasb"></script>
+    
+    <style>
+        :root {
+            --primary: #ffcc00; 
+            --bg-color: #f4f7f6;
+            --text-dark: #333;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+            margin: 0;
+        }
+        .card { 
+            background: white; padding: 40px; border-radius: 16px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); width: 380px; position: relative;
+        }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h2 { margin: 0; color: var(--text-dark); font-size: 24px; }
+        .header p { color: #777; font-size: 14px; margin-top: 5px; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; font-weight: bold;}
+        .input-group input { 
+            width: 100%; padding: 12px; border: 1px solid #ddd; 
+            border-radius: 8px; font-size: 15px; box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .input-group input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 5px rgba(255, 204, 0, 0.5); }
+        
+        .btn { 
+            width: 100%; padding: 14px; background: var(--primary); 
+            color: #000; border: none; border-radius: 8px; font-size: 16px; 
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn:hover { background: #e6b800; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .btn-outline {
+            background: transparent; border: 2px solid #333; margin-top: 15px;
+        }
+        .btn-outline:hover { background: #eee; }
+        
+        .secure-badge {
+            text-align: center; font-size: 12px; color: #888; margin-top: 20px;
+            display: flex; justify-content: center; align-items: center; gap: 5px;
+        }
+        
+        .alert-box {
+            display: none; padding: 20px; border-radius: 8px; text-align: center;
+            margin-top: 20px; font-size: 14px; line-height: 1.5;
+        }
+        .alert-error { display: block; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;}
+        .alert-success { display: block; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;}
+        
+        /* Spinner */
+        .loader {
+            border: 4px solid #f3f3f3; border-top: 4px solid #333;
+            border-radius: 50%; width: 20px; height: 20px;
+            animation: spin 1s linear infinite; margin: 0 auto; display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <div class="header">
+            <h2>AwasBank Secure</h2>
+            <p>Instant Transfer Portal</p>
+        </div>
+
+        <div id="transferForm">
+            <div class="input-group">
+                <label>Your Phone Number (Registered to Bank)</label>
+                <input type="text" id="phone" placeholder="0123456789" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Recipient Account Number</label>
+                <input type="text" id="account" placeholder="e.g. 1122334455" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Amount (RM)</label>
+                <input type="number" id="amount" placeholder="0.00" required>
+            </div>
+
+            <button class="btn" id="btnTransfer" onclick="processTransfer()">Authorize Transfer</button>
+            <div class="loader" id="loadingSpinner" style="margin-top:15px;"></div>
+        </div>
+
+        <div id="statusBox" class="alert-box"></div>
+        
+        <button class="btn btn-outline" id="btnCheckStatus" style="display:none;" onclick="checkGuardianStatus()">Check Guardian Approval</button>
+        <button class="btn btn-outline" id="btnCancel" style="display:none;" onclick="location.reload()">Return to Dashboard</button>
+
+        <div class="secure-badge">
+            🔒 Protected by Google reCAPTCHA Enterprise & AwasBot
+        </div>
+    </div>
+
+    <script>
+        let currentUserPhone = "";
+
+        function processTransfer() {
+            const phone = document.getElementById('phone').value;
+            const account = document.getElementById('account').value;
+            const amount = document.getElementById('amount').value;
+            const btn = document.getElementById('btnTransfer');
+            const spinner = document.getElementById('loadingSpinner');
+            const statusBox = document.getElementById('statusBox');
+            
+            if(!phone || !account || !amount) {
+                alert("Please fill all fields."); return;
+            }
+
+            currentUserPhone = phone.replace(" ", "").replace("+60", "0");
+
+            btn.style.display = "none";
+            spinner.style.display = "block";
+            statusBox.style.display = "none";
+
+            // 1. Get reCAPTCHA Token
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LeRHHUsAAAAALXo49EBAzoJOAxoJTykL3hxsasb', {action: 'transfer'}).then(function(token) {
+                    
+                    // 2. Python Backend Request
+                    fetch('https://awasbot-service-611405879605.asia-southeast1.run.app/bank_webhook', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            "token": token,
+                            "user_phone": currentUserPhone,
+                            "account": account,
+                            "amount": amount
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        spinner.style.display = "none";
+                        
+                        if (data.risk_score <= 0.3) {
+                            statusBox.className = "alert-error";
+                            statusBox.innerHTML = `<b>⚠️ CRITICAL RISK DETECTED</b><br><br>Google reCAPTCHA Score: ${data.risk_score}<br><br>Transaction Frozen. An SOS alert has been sent to your registered Digital Sahabat (Guardian) for review.`;
+                            
+                            document.getElementById('btnCheckStatus').style.display = "block";
+                        } else {
+                            statusBox.className = "alert-success";
+                            statusBox.innerHTML = `<b>✅ Transfer Successful</b><br><br>Risk Score: ${data.risk_score}<br>Amount: RM ${amount}`;
+                            
+                            document.getElementById('btnCancel').style.display = "block";
+                            document.getElementById('btnCancel').innerText = "Make Another Transfer";
+                        }
+                    })
+                    .catch(err => {
+                        spinner.style.display = "none";
+                        statusBox.className = "alert-error";
+                        statusBox.innerHTML = "❌ Connection Error. Check Python server.";
+                        btn.style.display = "block";
+                        btn.innerText = "Try Again";
+                    });
+                });
+            });
+        }
+
+        // REAL-TIME CHECK STATUS 
+        function checkGuardianStatus() {
+            const btnCheck = document.getElementById('btnCheckStatus');
+            const statusBox = document.getElementById('statusBox');
+            const btnCancel = document.getElementById('btnCancel');
+
+            btnCheck.disabled = true;
+            btnCheck.innerText = "Querying AwasBot Database...";
+            
+            fetch('https://awasbot-service-611405879605.asia-southeast1.run.app/check_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ "phone": currentUserPhone })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === "APPROVED") {
+                    btnCheck.style.display = "none";
+                    statusBox.className = "alert-success";
+                    statusBox.innerHTML = `<b>🛡️ GUARDIAN APPROVED</b><br><br>Digital Sahabat has verified your identity. Funds have been released to the merchant.`;
+                    btnCancel.style.display = "block";
+                    btnCancel.innerText = "Return to Dashboard";
+                } else if (data.status === "BLOCKED") {
+                    btnCheck.style.display = "none";
+                    statusBox.className = "alert-error";
+                    statusBox.innerHTML = `<b>🛑 TRANSACTION BLOCKED</b><br><br>Your Digital Sahabat (Guardian) has flagged this transfer as high-risk. Funds remain frozen for your safety.`;
+                    btnCancel.style.display = "block";
+                    btnCancel.innerText = "Return to Dashboard";
+                } else {
+                    // Still Pending
+                    btnCheck.disabled = false;
+                    btnCheck.innerText = "Still Waiting... Check Again";
+                }
+            })
+            .catch(err => {
+                btnCheck.disabled = false;
+                btnCheck.innerText = "Check Guardian Approval";
+                alert("Error connecting to database.");
+            });
+        }
+
+    </script>
+</body>
+</html>

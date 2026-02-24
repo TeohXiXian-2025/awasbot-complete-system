@@ -1,0 +1,18 @@
+# 1. Use an official lightweight Python image
+FROM python:3.11-slim
+
+# 2. Set the working directory in the cloud
+WORKDIR /app
+
+# 3. Copy your requirements and install Python libraries
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 4. CRITICAL: Install Playwright and all Linux browser dependencies
+RUN playwright install --with-deps chromium
+
+# 5. Copy the rest of your code (main.py, etc.)
+COPY . .
+
+# 6. Start the bot using Functions Framework on port 8080
+CMD ["functions-framework", "--target=telegram_webhook", "--port=8080", "--host=0.0.0.0"]

@@ -1,0 +1,45 @@
+Starting background process...
+Background process started with PID 26653
+[INFO] 2026-02-24 14:49:49.310 PM -- [CoderAgentExecutor] Overriding workspace path to: /home/xixianteoh
+[ERROR] 2026-02-24 14:49:49.314 PM -- Warning: unexpected file /home/xixianteoh/.gemini/extensions/extension-enablement.json in extensions directory.
+[ERROR] 2026-02-24 14:49:49.315 PM -- Warning: unexpected file /home/xixianteoh/.gemini/extensions/extension-enablement.json in extensions directory.
+[INFO] 2026-02-24 14:49:49.316 PM -- Loading extension: vertex (version: 0.1.0)
+(node:26653) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Loading extension: vertex
+Hook registry initialized with 0 hook entries
+Hook system initialized successfully
+[STARTUP] StartupProfiler.flush() called with 1 phases
+[STARTUP] Recording metric for phase: discover_tools duration: 6184.6718599999995
+[INFO] 2026-02-24 14:49:55.860 PM -- [Config] Using CCPA Auth:
+Failed to load credentials from /home/xixianteoh/.gemini/oauth_creds.json: ENOENT: no such file or directory, open '/home/xixianteoh/.gemini/oauth_creds.json'
+[?1049h[2J[H[?1006l[?1002l[<u[?7hPlease visit the following URL to authorize the application:
+
+https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https%3A%2F%2Fcodeassist.google.com%2Fauthcode&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&code_challenge_method=S256&code_challenge=ir3L1YNCFKDZ3bkL3-waIBVCw4d3Ko9fCocGnlB01dY&state=48bb58b3c19b4757b76b8c61816f764d86c5d3da4880e8445e428d3e1303e40b&response_type=code&client_id=681255809395-oo8ft2oprdrnp9e3aqf6av3hmdib135j.apps.googleusercontent.com
+
+[1G[0JEnter the authorization code: [31GBackground process is already running.
+Background process is already running.
+Stopping process (e.g., for restart)...
+Stopping process (e.g., for restart)...
+
+Process exited with code null and signal SIGTERM
+Process exited for restart, attempting to restart...
+Starting background process...
+Background process started with PID 28983
+[INFO] 2026-02-24 14:57:48.848 PM -- [CoderAgentExecutor] Overriding workspace path to: /home/xixianteoh
+[ERROR] 2026-02-24 14:57:48.852 PM -- Warning: unexpected file /home/xixianteoh/.gemini/extensions/extension-enablement.json in extensions directory.
+[ERROR] 2026-02-24 14:57:48.852 PM -- Warning: unexpected file /home/xixianteoh/.gemini/extensions/extension-enablement.json in extensions directory.
+[INFO] 2026-02-24 14:57:48.853 PM -- Loading extension: vertex (version: 0.1.0)
+(node:28983) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Loading extension: vertex
+Hook registry initialized with 0 hook entries
+Hook system initialized successfully
+[STARTUP] StartupProfiler.flush() called with 1 phases
+[STARTUP] Recording metric for phase: discover_tools duration: 3168.6694639999996
+[INFO] 2026-02-24 14:57:52.217 PM -- [Config] Using CCPA Auth:
+Failed to load credentials from /home/xixianteoh/.gemini/oauth_creds.json: ENOENT: no such file or directory, open '/home/xixianteoh/.gemini/oauth_creds.json'
+[?1049h[2J[H[?1006l[?1002l[<u[?7hPlease visit the following URL to authorize the application:
+
+https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https%3A%2F%2Fcodeassist.google.com%2Fauthcode&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&code_challenge_method=S256&code_challenge=waP1d_Tdpaz_H30bOxQ7QL8h3SUkiWK7n7SXUfwDw0w&state=d6e85e224e84ef1733b5d7a586bf500f6a326df3799e433feb8c0850464a639c&response_type=code&client_id=681255809395-oo8ft2oprdrnp9e3aqf6av3hmdib135j.apps.googleusercontent.com
+[1G[0JEnter the authorization code: [31G

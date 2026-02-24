@@ -12,6 +12,7 @@ import base64
 import json
 import asyncio
 import sys
+import threading
 from playwright.async_api import async_playwright
 from google.cloud import firestore
 from pyaxmlparser import APK
@@ -20,13 +21,14 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Prevent duplicate messages
+processed_updates = set()
+
 # CRITICAL WINDOWS FIX FOR PLAYWRIGHT 
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
 # 1. CONFIGURATION 
-
-# Keys pulled dynamically from the secure environment
 TELEGRAM_TOKEN_MAIN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_TOKEN_GUARDIAN = os.getenv("TELEGRAM_TOKEN_GUARDIAN")
 VT_API_KEY = os.getenv("VT_API_KEY")
@@ -57,7 +59,6 @@ def send_interim(chat_id, text, is_guardian=False):
     session.post(f"{get_api_url(is_guardian)}/sendMessage", json={"chat_id": chat_id, "text": text})
 
 def send_sos(user_id, text, override_gid=None):
-    # SOS ALERTS GO THROUGH GUARDIAN BOT!
     gid = override_gid or get_user_data(user_id).get("guardian_id")
     if gid:
         send_reply(gid, text, is_guardian=True)
@@ -111,19 +112,31 @@ def telegram_webhook(request):
     data = request.get_json(silent=True)
     if not data: return (jsonify({'status': 'no data'}), 200, headers)
 
-    # Traffic Routing based on the URL path
+    # Duplication filter
+    update_id = data.get("update_id")
+    if update_id:
+        if update_id in processed_updates:
+            return (jsonify({'status': 'duplicate'}), 200)
+        processed_updates.add(update_id)
+        if len(processed_updates) > 100: processed_updates.pop()
+
     path = request.path
 
+    # Direct Webhooks (No threading needed)
     if path == "/bank_webhook" or data.get("type") == "BANK_WEBHOOK":
         return handle_bank_webhook(data, headers)
+    
+    elif path == "/check_status":
+        return handle_check_status(data, headers)
 
-    elif path == "/guardianbot":
-        return process_guardian_bot(data, headers)
+    # Bot Routing (Threaded)
+    if path == "/guardianbot":
+        target_func = process_guardian_bot
+    else:
+        target_func = process_main_bot
 
-    elif path == "/mainbot" or path == "/": # Default to main bot
-        return process_main_bot(data, headers)
-
-    return jsonify({'status': 'ok'}), 200
+    threading.Thread(target=target_func, args=(data, headers)).start()
+    return (jsonify({'status': 'acknowledged'}), 200, headers)
 
 #  THE GUARDIAN BOT LOGIC
 def process_guardian_bot(data, headers):
@@ -141,13 +154,10 @@ def process_guardian_bot(data, headers):
                 "You will receive SOS alerts here if your linked user encounters high-risk scams or flagged bank transfers.\n\n"
                 f"Your Guardian ID to give them is: `{chat_id}`"
             )
-            
-            # Simple Guardian Menu
             reply_markup = {"keyboard": [[{"text": "📊 View Protected Status"}]], "resize_keyboard": True}
             send_reply(chat_id, msg, is_guardian=True, reply_markup=reply_markup)
             
         elif text == "📊 View Protected Status":
-            # Find users who have this person as a guardian
             users_ref = db.collection('users')
             query = users_ref.where('guardian_id', '==', str(chat_id)).stream()
             protected_users = [doc.to_dict().get('name', 'Unknown') for doc in query]
@@ -165,16 +175,26 @@ def handle_guardian_callback(callback_query, headers):
     message_id = callback_query["message"]["message_id"]
     callback_data = callback_query["data"]
     
+    phone = ""
+    status_val = "PENDING"
+
     if callback_data.startswith("approve_"):
         phone = callback_data.split("_")[1]
+        status_val = "APPROVED"
         new_text = f"✅ **TRANSACTION UNLOCKED**\n━━━━━━━━━━━━━━━━━━━━━\nThe funds for account {phone} have been securely released to the merchant. The Bank has been notified."
     elif callback_data.startswith("block_"):
         phone = callback_data.split("_")[1]
+        status_val = "BLOCKED"
         new_text = f"🛑 **TRANSACTION BLOCKED**\n━━━━━━━━━━━━━━━━━━━━━\nThe funds for account {phone} remain frozen. AwasBot has flagged the destination account for review."
     else:
         new_text = "Action processed."
 
-    # Update original message and clear loading state using Guardian Token
+    # SAVE DECISION TO DATABASE FOR THE WEBSITE
+    if phone:
+        query = db.collection('users').where('phone', '==', phone).stream()
+        for doc in query:
+            doc.reference.update({'transaction_status': status_val})
+
     session.post(f"{get_api_url(is_guardian=True)}/editMessageText", json={"chat_id": chat_id, "message_id": message_id, "text": new_text})
     session.post(f"{get_api_url(is_guardian=True)}/answerCallbackQuery", json={"callback_query_id": cb_id})
     
@@ -238,14 +258,12 @@ def handle_text_main(chat_id, text):
     if state == "WAITING_GUARDIAN":
         if text.lstrip('-').isdigit():  
             update_user_data(chat_id, {"guardian_id": text, "state": "MAIN_MENU"})
-            # Alert the Guardian Bot!
             send_reply(text, f"🤝 **DIGITAL SAHABAT LINKED**: You are now the active guardian for {name}.", is_guardian=True)
             send_main_menu(chat_id, lang, t(lang, f"✅ Registration Complete, {name}!", f"✅ Pendaftaran Selesai, {name}!", f"✅ 注册完成, {name}！"))
         else:
             send_reply(chat_id, "⚠️ Invalid ID. Please enter a numeric Guardian ID.")
         return
 
-    # Button Handlers
     if text in ["📸 Scan Image", "📸 Imbas Gambar", "📸 扫描图片"]:
         send_reply(chat_id, t(lang, "📸 Please upload the Image.", "📸 Sila muat naik Gambar.", "📸 请上传图片。"))
     elif text in ["🎤 Scan Audio", "🎤 Imbas Audio", "🎤 扫描语音"]:
@@ -272,7 +290,6 @@ def send_main_menu(chat_id, lang, text_message):
     send_reply(chat_id, text_message, reply_markup=reply_markup)
 
 # 3. AI SCANNERS
-
 URL_SYSTEM_PROMPT = """
 Act as a Senior Forensic Web Security Analyst. Detect scams mimicking brands like Maybank, DHL, or Shopee.
 Analyze network DNA, redirects, and content. Respond strictly in JSON:
@@ -307,12 +324,9 @@ async def run_rantai_headless_scan(url):
         except Exception as e: return {"error": str(e)}, None
         finally: await browser.close()
 
-
 def get_telegram_file(file_id):
-    """Helper to download files using the MAIN bot token"""
     res = session.get(f"{get_api_url(False)}/getFile?file_id={file_id}").json()
     return f"https://api.telegram.org/file/bot{TELEGRAM_TOKEN_MAIN}/{res['result']['file_path']}"
-
 
 def handle_audio(chat_id, file_id):
     lang = get_user_data(chat_id).get("language", "en")
@@ -528,9 +542,7 @@ def check_general_document(chat_id, fid, name):
     else:
         send_reply(chat_id, t(lang, f"🟡 **THREAT REPORT: UNKNOWN**\n━━━━━━━━━━━━━━━━━━━━━\n**Target:** {name}\n**Status:** ⚠️ No Data\n**Action:** Proceed with caution.", f"🟡 **LAPORAN ANCAMAN: TIDAK DIKETAHUI**\n━━━━━━━━━━━━━━━━━━━━━\n**Sasaran:** {name}\n**Status:** ⚠️ Tiada Data\n**Tindakan:** Berhati-hati.", f"🟡 **威胁报告：未知**\n━━━━━━━━━━━━━━━━━━━━━\n**目标：** {name}\n**状态：** ⚠️ 无数据\n**行动：** 谨慎操作。") + get_disclaimer(lang))
 
-
 #  5. REAL B2B BANK WEBHOOK HANDLER
-
 def handle_bank_webhook(data, headers):
     PROJECT_ID = os.getenv("BANK_PROJECT_ID")
     API_KEY = os.getenv("BANK_API_KEY")
@@ -559,6 +571,9 @@ def handle_bank_webhook(data, headers):
             victim_chat_id = doc.id
             guardian_id = user_data.get("guardian_id")
             victim_name = user_data.get("name", "Unknown User")
+            
+            # Reset the transaction status for this new transfer
+            doc.reference.update({'transaction_status': 'PENDING'})
             break 
             
         if victim_chat_id:
@@ -568,9 +583,20 @@ def handle_bank_webhook(data, headers):
                 # SEND TO GUARDIAN BOT!
                 send_reply(guardian_id, msg, is_guardian=True, reply_markup=reply_markup)
             else:
-                # Send warning to user if no guardian
                 send_reply(victim_chat_id, f"🚨 Warning: High risk bank transfer blocked (Score {score}), but no Guardian is linked to your account!", is_guardian=False)
             
             log_threat_to_vault(victim_chat_id, 'BANK_FRAUD', 'Transfer Attempt', score, 'Blocked by Maybank reCAPTCHA Enterprise.')
             
     return (jsonify({"status": "received", "risk_score": score}), 200, headers)
+
+#  6. CHECK STATUS ENDPOINT
+def handle_check_status(data, headers):
+    phone = data.get("phone", "")
+    query = db.collection('users').where('phone', '==', phone).stream()
+    
+    status = "PENDING"
+    for doc in query:
+        status = doc.to_dict().get("transaction_status", "PENDING")
+        break
+        
+    return (jsonify({"status": status}), 200, headers)

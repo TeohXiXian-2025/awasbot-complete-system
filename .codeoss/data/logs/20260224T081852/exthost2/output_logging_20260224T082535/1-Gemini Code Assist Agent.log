@@ -1,0 +1,20 @@
+Starting background process...
+Background process started with PID 2389
+[INFO] 2026-02-24 08:25:42.703 AM -- [CoderAgentExecutor] Overriding workspace path to: /home/xixianteoh
+[ERROR] 2026-02-24 08:25:42.710 AM -- Warning: unexpected file /home/xixianteoh/.gemini/extensions/extension-enablement.json in extensions directory.
+[ERROR] 2026-02-24 08:25:42.711 AM -- Warning: unexpected file /home/xixianteoh/.gemini/extensions/extension-enablement.json in extensions directory.
+[INFO] 2026-02-24 08:25:42.711 AM -- Loading extension: vertex (version: 0.1.0)
+(node:2389) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Loading extension: vertex
+Hook registry initialized with 0 hook entries
+Hook system initialized successfully
+[STARTUP] StartupProfiler.flush() called with 1 phases
+[STARTUP] Recording metric for phase: discover_tools duration: 3519.6363629999996
+[INFO] 2026-02-24 08:25:46.369 AM -- [Config] Using CCPA Auth:
+Failed to load credentials from /home/xixianteoh/.gemini/oauth_creds.json: ENOENT: no such file or directory, open '/home/xixianteoh/.gemini/oauth_creds.json'
+[?1049h[2J[H[?1006l[?1002l[<u[?7hPlease visit the following URL to authorize the application:
+
+https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https%3A%2F%2Fcodeassist.google.com%2Fauthcode&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&code_challenge_method=S256&code_challenge=CJ8-8s-o2tMIciXt7YGenOlH1XuEVaW9VFT8bsc70cE&state=36a24a659ef6ada7e6a639799ef299e5bb413dd3fab4d72e5d9dce1b3dca1087&response_type=code&client_id=681255809395-oo8ft2oprdrnp9e3aqf6av3hmdib135j.apps.googleusercontent.com
+
+[1G[0JEnter the authorization code: [31G

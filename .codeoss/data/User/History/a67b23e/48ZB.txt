@@ -1,0 +1,8 @@
+functions-framework==3.*
+flask
+requests
+google-generativeai
+playwright
+google-cloud-firestore
+pyaxmlparser
+python-dotenv

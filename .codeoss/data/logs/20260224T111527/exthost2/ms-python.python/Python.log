@@ -1,0 +1,156 @@
+2026-02-24 12:03:02.253 [warning] Dir "/home/xixianteoh/.pixi/envs" is not watchable (directory does not exist)
+2026-02-24 12:03:10.799 [info] Skipping ActivatedEnv Detection:  process.env.VSCODE_CLI !== '1'
+2026-02-24 12:03:10.804 [info] Python interpreter path: /bin/python
+2026-02-24 12:03:11.594 [info] > pyenv which python
+2026-02-24 12:03:11.594 [info] cwd: .
+2026-02-24 12:03:14.097 [info] Starting Jedi language server for xixianteoh.
+2026-02-24 12:03:34.335 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:04:25.898 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:04:31.855 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:04:33.900 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:04:43.078 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:04:46.649 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:07:31.094 [info] Running installed packages checker:  {
+  id: '/bin/python',
+  sysPrefix: '/usr',
+  envType: 'Global',
+  envName: '',
+  envPath: '',
+  path: '/bin/python',
+  architecture: 3,
+  sysVersion: '3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0]',
+  version: {
+    raw: '3.12.3',
+    major: 3,
+    minor: 12,
+    patch: 3,
+    build: [],
+    prerelease: [ 'final', '0' ]
+  },
+  displayName: 'Python 3.12.3 64-bit',
+  detailedDisplayName: 'Python 3.12.3 64-bit',
+  type: undefined
+} /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py /home/xixianteoh/requirements.txt
+2026-02-24 12:07:31.095 [info] > /bin/python /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py ./requirements.txt
+2026-02-24 12:07:34.813 [info] Running installed packages checker:  {
+  id: '/bin/python',
+  sysPrefix: '/usr',
+  envType: 'Global',
+  envName: '',
+  envPath: '',
+  path: '/bin/python',
+  architecture: 3,
+  sysVersion: '3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0]',
+  version: {
+    raw: '3.12.3',
+    major: 3,
+    minor: 12,
+    patch: 3,
+    build: [],
+    prerelease: [ 'final', '0' ]
+  },
+  displayName: 'Python 3.12.3 64-bit',
+  detailedDisplayName: 'Python 3.12.3 64-bit',
+  type: undefined
+} /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py /home/xixianteoh/requirements.txt
+2026-02-24 12:07:34.813 [info] > /bin/python /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py ./requirements.txt
+2026-02-24 12:11:59.337 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:22:09.103 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:25:14.280 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:25:51.534 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:27:15.922 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:35.925 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:37.968 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:43.924 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:46.913 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:49.457 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:52.930 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:54.769 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:28:59.644 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:13.341 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:26.435 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:31.943 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:42.940 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:45.877 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:53.486 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:29:58.624 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:30:20.953 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:30:28.717 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:30:31.005 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:30:36.824 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:30:59.665 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:31:02.117 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:31:07.513 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:31:44.172 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:31:49.064 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:32:14.870 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:32:18.612 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:33:43.096 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:33:45.614 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:33:50.502 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 12:34:02.016 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/main.py
+2026-02-24 13:47:57.598 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:48:52.759 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:49:35.798 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:51:51.018 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:52:05.022 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:52:12.239 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:52:34.126 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:52:35.218 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:55:57.934 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:56:02.959 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:56:10.068 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:56:11.985 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:56:27.960 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:56:29.557 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:56:32.192 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:57:29.398 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:57:30.617 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 13:57:31.799 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 14:37:38.318 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 14:38:48.101 [info] Running installed packages checker:  {
+  id: '/bin/python',
+  sysPrefix: '/usr',
+  envType: 'Global',
+  envName: '',
+  envPath: '',
+  path: '/bin/python',
+  architecture: 3,
+  sysVersion: '3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0]',
+  version: {
+    raw: '3.12.3',
+    major: 3,
+    minor: 12,
+    patch: 3,
+    build: [],
+    prerelease: [ 'final', '0' ]
+  },
+  displayName: 'Python 3.12.3 64-bit',
+  detailedDisplayName: 'Python 3.12.3 64-bit',
+  type: undefined
+} /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py /home/xixianteoh/awasbot-project/requirements.txt
+2026-02-24 14:38:48.102 [info] > /bin/python /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py ./awasbot-project/requirements.txt
+2026-02-24 14:38:51.539 [info] Running installed packages checker:  {
+  id: '/bin/python',
+  sysPrefix: '/usr',
+  envType: 'Global',
+  envName: '',
+  envPath: '',
+  path: '/bin/python',
+  architecture: 3,
+  sysVersion: '3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0]',
+  version: {
+    raw: '3.12.3',
+    major: 3,
+    minor: 12,
+    patch: 3,
+    build: [],
+    prerelease: [ 'final', '0' ]
+  },
+  displayName: 'Python 3.12.3 64-bit',
+  detailedDisplayName: 'Python 3.12.3 64-bit',
+  type: undefined
+} /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py /home/xixianteoh/awasbot-project/requirements.txt
+2026-02-24 14:38:51.540 [info] > /bin/python /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/installed_check.py ./awasbot-project/requirements.txt
+2026-02-24 14:46:27.396 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py
+2026-02-24 14:48:59.744 [info] Discover tests for workspace name: xixianteoh - uri: /home/xixianteoh/awasbot-project/main.py

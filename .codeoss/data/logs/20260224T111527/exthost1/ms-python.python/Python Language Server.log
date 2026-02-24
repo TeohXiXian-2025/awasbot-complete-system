@@ -1,0 +1,80 @@
+2026-02-24 11:15:47.234 [info] ERROR:pygls.protocol.json_rpc:Failed to handle request 2 textDocument/codeAction CodeActionParams(text_document=TextDocumentIdentifier(uri='file:///home/xixianteoh/main.py'), range=128:28-128:28, context=CodeActionContext(diagnostics=[], only=None, trigger_kind=<CodeActionTriggerKind.Automatic: 2>), work_done_token=None, partial_result_token=None)
+Traceback (most recent call last):
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/pygls/protocol/json_rpc.py", line 266, in _handle_request
+    self._execute_request(msg_id, handler, params)
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/pygls/protocol/json_rpc.py", line 188, in _execute_request
+    self._send_response(msg_id, handler(params))
+                                ^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi_language_server/notebook_utils.py", line 373, in wrapped
+    result = f(notebook_server, notebook_params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi_language_server/server.py", line 671, in code_action
+    inline_refactoring = jedi_script.inline(*jedi_lines)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi/api/__init__.py", line 697, in inline
+    names = [d._name for d in self.get_references(line, column, include_builtins=True)]
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi/api/helpers.py", line 484, in wrapper
+    raise ValueError('`column` parameter (%d) is not in a valid range '
+ValueError: `column` parameter (28) is not in a valid range (0-27) for line 129 ('# 🔘 GUARDIAN BUTTON HANDLER\n').
+
+2026-02-24 11:15:47.240 [info] [Error - 11:15:47 AM] Request textDocument/codeAction failed.
+2026-02-24 11:15:47.240 [info]   Message: ValueError: `column` parameter (28) is not in a valid range (0-27) for line 129 ('# 🔘 GUARDIAN BUTTON HANDLER\n').
+  Code: -32603 
+[object Object]
+2026-02-24 11:53:31.747 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "49"
+
+2026-02-24 11:53:32.656 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "50"
+
+2026-02-24 11:53:33.565 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "51"
+
+2026-02-24 11:53:34.490 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "52"
+
+2026-02-24 11:53:35.456 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "53"
+
+2026-02-24 11:53:36.425 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "54"
+
+2026-02-24 11:53:37.484 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "55"
+
+2026-02-24 11:53:42.231 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "58"
+
+2026-02-24 11:53:51.886 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "66"
+
+2026-02-24 11:53:51.980 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "67"
+
+2026-02-24 11:53:51.988 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "69"
+
+2026-02-24 11:53:51.994 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "68"
+
+2026-02-24 11:53:52.096 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "70"
+
+2026-02-24 11:53:52.098 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "71"
+
+2026-02-24 11:53:52.213 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "72"
+
+2026-02-24 11:55:42.832 [info] WARNING:pygls.protocol.json_rpc:Cancel notification for unknown message id "81"
+
+2026-02-24 11:57:09.355 [info] ERROR:pygls.protocol.json_rpc:Failed to handle request 99 textDocument/codeAction CodeActionParams(text_document=TextDocumentIdentifier(uri='file:///home/xixianteoh/main.py'), range=569:62-569:62, context=CodeActionContext(diagnostics=[], only=None, trigger_kind=<CodeActionTriggerKind.Automatic: 2>), work_done_token=None, partial_result_token=None)
+Traceback (most recent call last):
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/pygls/protocol/json_rpc.py", line 266, in _handle_request
+    self._execute_request(msg_id, handler, params)
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/pygls/protocol/json_rpc.py", line 188, in _execute_request
+    self._send_response(msg_id, handler(params))
+                                ^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi_language_server/notebook_utils.py", line 373, in wrapped
+    result = f(notebook_server, notebook_params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi_language_server/server.py", line 671, in code_action
+    inline_refactoring = jedi_script.inline(*jedi_lines)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi/api/__init__.py", line 697, in inline
+    names = [d._name for d in self.get_references(line, column, include_builtins=True)]
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/lib/jedilsp/jedi/api/helpers.py", line 484, in wrapper
+    raise ValueError('`column` parameter (%d) is not in a valid range '
+ValueError: `column` parameter (62) is not in a valid range (0-61) for line 570 ('                    f"🚨 **SOS 警报**: 发现高风险链接！{url_to_check}"))\n').
+
+2026-02-24 11:57:09.358 [info] [Error - 11:57:09 AM] Request textDocument/codeAction failed.
+2026-02-24 11:57:09.358 [info]   Message: ValueError: `column` parameter (62) is not in a valid range (0-61) for line 570 ('                    f"🚨 **SOS 警报**: 发现高风险链接！{url_to_check}"))\n').
+  Code: -32603 
+[object Object]
