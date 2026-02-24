@@ -24,149 +24,262 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3); width: 380px; position: relative;
         }
         .header { text-align: center; margin-bottom: 25px; }
-        .header h2 { margin: 0; color: var(--text-dark); font-size: 24px; }
-        .header p { color: #777; font-size: 14px; margin-top: 5px; }
+        .header h2 { margin: 0; color: var(--text-dark); font-size: 26px; font-weight: 800;}
+        .header p { color: #777; margin-top: 5px; font-size: 14px; }
         
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; font-weight: bold;}
-        .input-group input { 
-            width: 100%; padding: 12px; border: 1px solid #ddd; 
-            border-radius: 8px; font-size: 15px; box-sizing: border-box;
-            transition: 0.3s;
+        .input-group { margin-bottom: 20px; text-align: left;}
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 13px;}
+        input { 
+            width: 100%; padding: 14px; border: 1.5px solid #ddd; 
+            border-radius: 8px; box-sizing: border-box; font-size: 16px;
+            transition: 0.3s; background: #f9f9f9;
         }
-        .input-group input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 5px rgba(255, 204, 0, 0.5); }
+        input:focus { border-color: var(--primary); outline: none; background: white;}
         
-        .btn { 
-            width: 100%; padding: 14px; background: var(--primary); 
-            color: #000; border: none; border-radius: 8px; font-size: 16px; 
-            font-weight: bold; cursor: pointer; transition: 0.3s;
+        button { 
+            width: 100%; background-color: var(--primary); color: #222;
+            border: none; padding: 16px; font-weight: bold; border-radius: 8px; 
+            cursor: pointer; font-size: 16px; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3); margin-top: 10px;
         }
-        .btn:hover { background: #e6b800; }
-        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        button:hover { background-color: #e6b800; transform: translateY(-2px); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; transform: none; box-shadow: none;}
+        
+        .btn-secondary { background-color: #eef2f3; box-shadow: none; color: #555; margin-top: 10px;}
+        .btn-secondary:hover { background-color: #dfe6e9; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); box-shadow: none;}
 
-        .btn-outline {
-            background: transparent; border: 2px solid #333; margin-top: 15px;
-        }
-        .btn-outline:hover { background: #eee; }
-        
-        .secure-badge {
-            text-align: center; font-size: 12px; color: #888; margin-top: 20px;
-            display: flex; justify-content: center; align-items: center; gap: 5px;
-        }
-        
-        .alert-box {
-            display: none; padding: 20px; border-radius: 8px; text-align: center;
-            margin-top: 20px; font-size: 14px; line-height: 1.5;
-        }
-        .alert-error { display: block; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;}
-        .alert-success { display: block; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;}
-        
-        /* Spinner */
-        .loader {
-            border: 4px solid #f3f3f3; border-top: 4px solid #333;
-            border-radius: 50%; width: 20px; height: 20px;
-            animation: spin 1s linear infinite; margin: 0 auto; display: none;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Pages */
+        .page { display: none; animation: fadeIn 0.4s; }
+        .active-page { display: block; }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Transfer Details Box */
+        .transfer-summary {
+            background: #f8f9fa; padding: 15px; border-radius: 8px;
+            margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left;
+        }
+        .transfer-summary p { margin: 5px 0; color: #555; font-size: 15px;}
+        .transfer-summary strong { color: #222; }
+        
+        /* Alerts */
+        #statusBox { margin-top: 20px; font-size: 14px; line-height: 1.5; border-radius: 8px; transition: 0.3s; display: none;}
+        .alert-loading { padding: 15px; background: #eef2f3; color: #555; text-align: center; border-radius: 8px; border: 1px solid #ccc;}
+        .alert-error { padding: 15px; background: #ffebee; color: #d9534f; border: 1px solid #f5c6cb; border-radius: 8px;}
+        .alert-success { padding: 15px; background: #e8f5e9; color: #28a745; border: 1px solid #c3e6cb; border-radius: 8px;}
+        
+        .security-badge { text-align: center; margin-top: 25px; font-size: 11px; color: #aaa; }
     </style>
 </head>
 <body>
 
-    <div class="card" id="mainCard">
-        <div class="header">
-            <h2>AwasBank Secure</h2>
-            <p>Instant Transfer Portal</p>
+    <div class="card">
+        
+        <div id="page-register" class="page active-page">
+            <div class="header">
+                <h2>🏦 AwasBank</h2>
+                <p>Open a new secure account</p>
+            </div>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="e.g. Cristal Teoh">
+            </div>
+            <div class="input-group">
+                <label>Phone Number (Used for AwasBot Link)</label>
+                <input type="tel" id="regPhone" placeholder="e.g. 0123456789">
+            </div>
+            <div class="input-group">
+                <label>Create PIN</label>
+                <input type="password" id="regPin" placeholder="****">
+            </div>
+            <button onclick="doRegister()">Create Account</button>
+            <button class="btn-secondary" onclick="showPage('page-login')">Already have an account? Login</button>
         </div>
 
-        <div id="transferForm">
-            <div class="input-group">
-                <label>Your Phone Number (Registered to Bank)</label>
-                <input type="text" id="phone" placeholder="0123456789" required>
+        <div id="page-login" class="page">
+            <div class="header">
+                <h2>🏦 Welcome Back</h2>
+                <p>Login to AwasBank Portal</p>
             </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" id="loginPhone" placeholder="e.g. 0123456789">
+            </div>
+            <div class="input-group">
+                <label>PIN</label>
+                <input type="password" id="loginPin" placeholder="****">
+            </div>
+            <button onclick="doLogin()">Secure Login</button>
+            <button class="btn-secondary" onclick="showPage('page-register')">Back to Register</button>
+        </div>
+
+        <div id="page-dashboard" class="page">
+            <div class="header">
+                <h2>Good Day, <span id="userNameDisplay">User</span></h2>
+                <p>Balance: <strong>RM 12,450.00</strong></p>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+            <h3 style="font-size: 16px; margin-bottom: 15px; color: #333;">Quick Transfer</h3>
             
             <div class="input-group">
-                <label>Recipient Account Number</label>
-                <input type="text" id="account" placeholder="e.g. 1122334455" required>
+                <label>Destination Account Number</label>
+                <input type="text" id="transferAcc" placeholder="e.g. 1122334455">
             </div>
-            
             <div class="input-group">
                 <label>Amount (RM)</label>
-                <input type="number" id="amount" placeholder="0.00" required>
+                <input type="number" id="transferAmt" placeholder="5000">
             </div>
-
-            <button class="btn" id="btnTransfer" onclick="processTransfer()">Authorize Transfer</button>
-            <div class="loader" id="loadingSpinner" style="margin-top:15px;"></div>
+            <button onclick="prepTransfer()">Next</button>
+            <button class="btn-secondary" onclick="doLogout()">Logout</button>
         </div>
 
-        <div id="statusBox" class="alert-box"></div>
-        
-        <button class="btn btn-outline" id="btnCheckStatus" style="display:none;" onclick="checkGuardianStatus()">Check Guardian Approval</button>
-        <button class="btn btn-outline" id="btnCancel" style="display:none;" onclick="location.reload()">Return to Dashboard</button>
+        <div id="page-transfer" class="page">
+            <div class="header">
+                <h2>Review Transfer</h2>
+                <p>Please confirm the details below</p>
+            </div>
+            
+            <div class="transfer-summary">
+                <p>To Account: <strong id="summaryAcc">---</strong></p>
+                <p>Amount: <strong style="font-size: 22px; color: #d9534f;" id="summaryAmt">RM 0.00</strong></p>
+            </div>
+            
+            <button id="btnAuthorize" onclick="executeTransfer()">Authorize Transfer</button>
+            <button id="btnCheckStatus" class="btn-outline" style="display: none;" onclick="checkGuardianStatus()">🔄 Check Guardian Approval</button>
+            <button class="btn-secondary" id="btnCancel" onclick="showPage('page-dashboard')">Cancel</button>
 
-        <div class="secure-badge">
+            <div id="statusBox"></div>
+        </div>
+
+        <div class="security-badge">
             🔒 Protected by Google reCAPTCHA Enterprise & AwasBot
         </div>
+
     </div>
 
     <script>
+        // GLOBAL VARIABLES
         let currentUserPhone = "";
+        let currentUserName = "";
 
-        function processTransfer() {
-            const phone = document.getElementById('phone').value;
-            const account = document.getElementById('account').value;
-            const amount = document.getElementById('amount').value;
-            const btn = document.getElementById('btnTransfer');
-            const spinner = document.getElementById('loadingSpinner');
-            const statusBox = document.getElementById('statusBox');
+        // --- PAGE NAVIGATION ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
             
-            if(!phone || !account || !amount) {
-                alert("Please fill all fields."); return;
+            // Reset status box if we leave the transfer page
+            document.getElementById('statusBox').style.display = "none";
+            document.getElementById('btnCheckStatus').style.display = "none";
+            document.getElementById('btnAuthorize').style.display = "block";
+            document.getElementById('btnAuthorize').disabled = false;
+            document.getElementById('btnAuthorize').innerText = "Authorize Transfer";
+        }
+
+        // AUTHENTICATION LOGIC 
+        function doRegister() {
+            const phone = document.getElementById('regPhone').value;
+            const name = document.getElementById('regName').value;
+            if(!phone || !name) { alert("Please fill all fields"); return; }
+            
+            // Save to browser memory temporarily
+            localStorage.setItem("awasBankPhone", phone);
+            localStorage.setItem("awasBankName", name);
+            alert("Registration successful! Please login.");
+            showPage('page-login');
+        }
+
+        function doLogin() {
+            const phoneInput = document.getElementById('loginPhone').value;
+            const savedPhone = localStorage.getItem("awasBankPhone");
+            
+            if(phoneInput === savedPhone && phoneInput !== "") {
+                currentUserPhone = savedPhone;
+                currentUserName = localStorage.getItem("awasBankName");
+                document.getElementById('userNameDisplay').innerText = currentUserName;
+                showPage('page-dashboard');
+            } else {
+                
+                currentUserPhone = phoneInput;
+                document.getElementById('userNameDisplay').innerText = "User";
+                showPage('page-dashboard');
             }
+        }
 
-            currentUserPhone = phone.replace(" ", "").replace("+60", "0");
+        function doLogout() {
+            currentUserPhone = "";
+            showPage('page-login');
+        }
 
-            btn.style.display = "none";
-            spinner.style.display = "block";
-            statusBox.style.display = "none";
+        // TRANSFER LOGIC 
+        function prepTransfer() {
+            const acc = document.getElementById('transferAcc').value;
+            const amt = document.getElementById('transferAmt').value;
+            
+            if(!acc || !amt) { alert("Please enter account and amount."); return; }
 
-            // 1. Get reCAPTCHA Token
+            document.getElementById('summaryAcc').innerText = acc;
+            document.getElementById('summaryAmt').innerText = "RM " + parseFloat(amt).toFixed(2);
+            
+            showPage('page-transfer');
+        }
+
+        function executeTransfer() {
+            const btn = document.getElementById('btnAuthorize');
+            const btnCancel = document.getElementById('btnCancel');
+            const statusBox = document.getElementById('statusBox');
+
+            btn.disabled = true;
+            btnCancel.style.display = "none"; // Hide cancel button during processing
+            btn.innerText = "Processing AI Verification...";
+            
+            statusBox.style.display = "block";
+            statusBox.className = "alert-loading";
+            statusBox.innerHTML = "🔄 AI analyzing behavior & device telemetry...";
+
+            // 1. Google reCAPTCHA
             grecaptcha.ready(function() {
                 grecaptcha.execute('6LeRHHUsAAAAALXo49EBAzoJOAxoJTykL3hxsasb', {action: 'transfer'}).then(function(token) {
+                    
+                    statusBox.innerHTML = "🚀 Token generated. Contacting B2B Webhook...";
+                    
+                    // Clean phone format before sending
+                    const cleanPhone = currentUserPhone.replace(" ", "").replace("+60", "0");
                     
                     // 2. Python Backend Request
                     fetch('https://awasbot-service-611405879605.asia-southeast1.run.app/bank_webhook', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
+                            "type": "BANK_WEBHOOK",
                             "token": token,
-                            "user_phone": currentUserPhone,
-                            "account": account,
-                            "amount": amount
+                            "user_phone": cleanPhone 
                         })
                     })
                     .then(response => response.json())
                     .then(data => {
-                        spinner.style.display = "none";
+                        const score = data.risk_score; 
                         
-                        if (data.risk_score <= 0.3) {
+                        if (score <= 0.3) {
                             statusBox.className = "alert-error";
-                            statusBox.innerHTML = `<b>⚠️ CRITICAL RISK DETECTED</b><br><br>Google reCAPTCHA Score: ${data.risk_score}<br><br>Transaction Frozen. An SOS alert has been sent to your registered Digital Sahabat (Guardian) for review.`;
+                            statusBox.innerHTML = `<b>⚠️ CRITICAL RISK (Score: ${score})</b><br><br>Transaction blocked by AwasBot.<br>Guardian SOS dispatched via Telegram.`;
+                            btn.style.display = "none"; // Hide authorize button
                             
+                            // SHOW "CHECK STATUS" BUTTON
                             document.getElementById('btnCheckStatus').style.display = "block";
+                            
                         } else {
                             statusBox.className = "alert-success";
-                            statusBox.innerHTML = `<b>✅ Transfer Successful</b><br><br>Risk Score: ${data.risk_score}<br>Amount: RM ${amount}`;
-                            
-                            document.getElementById('btnCancel').style.display = "block";
-                            document.getElementById('btnCancel').innerText = "Make Another Transfer";
+                            statusBox.innerHTML = `<b>✅ VERIFIED SAFE (Score: ${score})</b><br><br>Transaction completed successfully.`;
+                            btn.innerText = "Transfer Complete ✓";
+                            btnCancel.style.display = "block";
+                            btnCancel.innerText = "Back to Dashboard";
                         }
                     })
                     .catch(err => {
-                        spinner.style.display = "none";
                         statusBox.className = "alert-error";
                         statusBox.innerHTML = "❌ Connection Error. Check Python server.";
-                        btn.style.display = "block";
+                        btn.disabled = false;
                         btn.innerText = "Try Again";
                     });
                 });
@@ -182,10 +295,12 @@
             btnCheck.disabled = true;
             btnCheck.innerText = "Querying AwasBot Database...";
             
+            const cleanPhone = currentUserPhone.replace(" ", "").replace("+60", "0");
+            
             fetch('https://awasbot-service-611405879605.asia-southeast1.run.app/check_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "phone": currentUserPhone })
+                body: JSON.stringify({ "phone": cleanPhone })
             })
             .then(response => response.json())
             .then(data => {
@@ -215,5 +330,6 @@
         }
 
     </script>
+
 </body>
 </html>
