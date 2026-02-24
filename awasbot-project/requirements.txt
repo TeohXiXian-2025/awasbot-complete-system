@@ -2,7 +2,7 @@ functions-framework==3.*
 flask
 requests
 google-generativeai
-playwright
+playwright==1.42.0
 google-cloud-firestore
 pyaxmlparser
 python-dotenv
