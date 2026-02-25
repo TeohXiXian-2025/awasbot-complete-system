@@ -129,6 +129,9 @@ def telegram_webhook(request):
     elif path == "/check_status":
         return handle_check_status(data, headers)
 
+    elif path == "/check-url":
+        return handle_extension_check_url(data, headers)
+
     # Bot Routing (Threaded)
     if path == "/guardianbot":
         target_func = process_guardian_bot
@@ -236,7 +239,7 @@ def handle_text_main(chat_id, text):
         new_lang = "ms" if "Bahasa" in text else "zh" if "中文" in text else "en"
         update_user_data(chat_id, {"language": new_lang, "state": "WAITING_NAME"})
         
-        # 🐛 BUG FIX: Hide the language keyboard so they are forced to type their name!
+        
         remove_markup = {"remove_keyboard": True}
         
         send_reply(chat_id, t(new_lang, 
@@ -267,7 +270,12 @@ def handle_text_main(chat_id, text):
         if text.lstrip('-').isdigit():  
             update_user_data(chat_id, {"guardian_id": text, "state": "MAIN_MENU"})
             send_reply(text, f"🤝 **DIGITAL SAHABAT LINKED**: You are now the active guardian for {name}.", is_guardian=True)
-            send_main_menu(chat_id, lang, t(lang, f"✅ Registration Complete, {name}!", f"✅ Pendaftaran Selesai, {name}!", f"✅ 注册完成, {name}！"))
+            
+            #  Grab the user's phone number 
+            user_phone = user_data.get("phone", "0000")
+            success_msg = f"✅ Registration Complete, {name}!\n\n💻 **ACTIVATE LAPTOP SHIELD:**\nOpen Telegram Desktop on your computer and click this link to connect your browser:\nhttp://awasbot.com/pair?phone={user_phone}"
+            
+            send_main_menu(chat_id, lang, success_msg)
         else:
             send_reply(chat_id, "⚠️ Invalid ID. Please enter a numeric Guardian ID.")
         return
@@ -282,7 +290,7 @@ def handle_text_main(chat_id, text):
         send_reply(chat_id, t(lang, "📄 Please upload the Document (PDF, APK).", "📄 Sila muat naik Dokumen (PDF, APK).", "📄 请上传文档 (PDF, APK)。"))
     elif text in ["🔄 Change Guardian ID", "🔄 Tukar ID Penjaga", "🔄 更改守护者 ID"]:
         update_user_data(chat_id, {"state": "WAITING_GUARDIAN"})
-        # 🐛 BUG FIX: Hide the main menu keyboard while they type the new ID
+        
         remove_markup = {"remove_keyboard": True}
         send_reply(chat_id, t(lang, 
             "🔄 Please enter your new Guardian ID:", 
@@ -617,3 +625,34 @@ def handle_check_status(data, headers):
         break
         
     return (jsonify({"status": status}), 200, headers)
+
+#  7. CHROME EXTENSION ENDPOINT 
+def handle_extension_check_url(data, headers):
+    # 1. Grab the URL and Phone Number the extension sent us
+    url_to_check = data.get("url", "")
+    user_phone = data.get("user_phone", "")
+    
+    # 2. Ask Google Web Risk if it's a scam
+    threats = "threatTypes=MALWARE&threatTypes=SOCIAL_ENGINEERING&threatTypes=UNWANTED_SOFTWARE"
+    wr_url = f"https://webrisk.googleapis.com/v1/uris:search?{threats}&uri={url_to_check}&key={WR_API_KEY}"
+    
+    try:
+        res = session.get(wr_url)
+        # 3. If Google says there is a threat, BLOCK it and ALERT Guardian!
+        if res.status_code == 200 and "threat" in res.json():
+            
+            if user_phone:
+                # Find the user's ID in the database using their phone number
+                query = db.collection('users').where('phone', '==', user_phone).stream()
+                for doc in query:
+                    chat_id = doc.id
+                    # Send the SOS to their Guardian!
+                    send_sos(chat_id, f"🚨 **LAPTOP SHIELD ALERT**: We just blocked your linked user from visiting a dangerous scam website: {url_to_check}")
+                    break
+                    
+            return (jsonify({"verdict": "BLOCK", "is_scam": True}), 200, headers)
+    except:
+        pass
+        
+    # 4. If it's safe, tell the extension to ALLOW it
+    return (jsonify({"verdict": "ALLOW", "is_scam": False}), 200, headers)
