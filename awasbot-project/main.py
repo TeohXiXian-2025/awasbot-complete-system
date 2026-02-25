@@ -235,7 +235,15 @@ def handle_text_main(chat_id, text):
     if state == "WAITING_LANG":
         new_lang = "ms" if "Bahasa" in text else "zh" if "中文" in text else "en"
         update_user_data(chat_id, {"language": new_lang, "state": "WAITING_NAME"})
-        send_reply(chat_id, t(new_lang, "🛡️ **Welcome to AwasBot!**\nWhat should I refer to you as?", "🛡️ **Selamat Datang ke AwasBot!**\nApakah nama panggilan anda?", "🛡️ **欢迎使用 AwasBot！**\n我该怎么称呼您？"))
+        
+        # 🐛 BUG FIX: Hide the language keyboard so they are forced to type their name!
+        remove_markup = {"remove_keyboard": True}
+        
+        send_reply(chat_id, t(new_lang, 
+            "🛡️ **Welcome to AwasBot!**\nWhat should I refer to you as?", 
+            "🛡️ **Selamat Datang ke AwasBot!**\nApakah nama panggilan anda?", 
+            "🛡️ **欢迎使用 AwasBot！**\n我该怎么称呼您？"), 
+            reply_markup=remove_markup)
         return
 
     if state == "WAITING_NAME":
@@ -272,6 +280,15 @@ def handle_text_main(chat_id, text):
         send_reply(chat_id, t(lang, "🎥 Please upload Video.", "🎥 Sila muat naik Video.", "🎥 请上传视频。"))
     elif text in ["📄 Scan File", "📄 Imbas Fail", "📄 扫描文件"]:
         send_reply(chat_id, t(lang, "📄 Please upload the Document (PDF, APK).", "📄 Sila muat naik Dokumen (PDF, APK).", "📄 请上传文档 (PDF, APK)。"))
+    elif text in ["🔄 Change Guardian ID", "🔄 Tukar ID Penjaga", "🔄 更改守护者 ID"]:
+        update_user_data(chat_id, {"state": "WAITING_GUARDIAN"})
+        # 🐛 BUG FIX: Hide the main menu keyboard while they type the new ID
+        remove_markup = {"remove_keyboard": True}
+        send_reply(chat_id, t(lang, 
+            "🔄 Please enter your new Guardian ID:", 
+            "🔄 Sila masukkan ID Penjaga anda yang baharu:", 
+            "🔄 请输入您的新守护者 ID："),
+            reply_markup=remove_markup)
     elif "http" in text:
         check_web_risk(chat_id, text, lang)
     else:
@@ -283,7 +300,7 @@ def send_main_menu(chat_id, lang, text_message):
         "keyboard": [
             [{"text": t(lang, "📸 Scan Image", "📸 Imbas Gambar", "📸 扫描图片")}, {"text": t(lang, "🎤 Scan Audio", "🎤 Imbas Audio", "🎤 扫描语音")}],
             [{"text": t(lang, "🎥 Scan Video", "🎥 Imbas Video", "🎥 扫描视频")}, {"text": t(lang, "📄 Scan File", "📄 Imbas Fail", "📄 扫描文件")}],
-            [{"text": t(lang, "🌍 Change Language", "🌍 Tukar Bahasa", "🌍 更改语言")}]
+            [{"text": t(lang, "🌍 Change Language", "🌍 Tukar Bahasa", "🌍 更改语言")}, {"text": t(lang, "🔄 Change Guardian ID", "🔄 Tukar ID Penjaga", "🔄 更改守护者 ID")}]
         ],
         "resize_keyboard": True
     }
