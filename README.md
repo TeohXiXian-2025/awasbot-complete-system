@@ -199,14 +199,24 @@ fetch('https://YOUR-CLOUD-RUN-URL/check_status', ...)
 
 ### Scenario 2: Browser Detects Scam URL (Chrome Extension)
 
-1. User visits suspicious URL
-2. **Layer 1**: Google Web Risk check
-3. **Layer 2**: VirusTotal crowdsourced scan
-4. **Layer 3**: Playwright browser forensics
-5. If BLOCKED → Redirect to warning.html
-6. **SOS Alert to Guardian**: "User almost visited {scam_url}"
+This scenario prioritizes **speed** so the user's web browsing is never interrupted unless there is a real threat.
 
-### Scenario 3: High-Risk Bank Transfer
+1. User clicks or visits a suspicious URL in Chrome.
+2. **Instant Scan**: The Chrome Extension instantly queries the Google Web Risk Database (Layer 1).
+3. If BLOCKED → The browser immediately stops the page from loading and redirects to `warning.html`.
+4. **SOS Alert to Guardian**: The Cloud Backend silently fires a message to the Guardian: *"🚨 LAPTOP SHIELD ALERT: We just blocked your linked user from visiting a dangerous scam website: {url_to_check}"*.
+
+### Scenario 3: User Sends Suspicious Link to Telegram Bot
+
+This scenario prioritizes **deep forensic analysis** when a user actively wants to investigate a link they received in an SMS or WhatsApp message.
+
+1. User pastes a suspicious link directly into the AwasBot Telegram chat.
+2. **Layer 1**: Quick check against Google Web Risk (Blacklist check).
+3. **Layer 2**: Secondary check against VirusTotal (Crowdsourced engine check).
+4. **Layer 3**: System deploys a Playwright Headless Browser to silently visit the site, capture the redirect chain, take a screenshot, and feed the evidence to Gemini AI.
+5. **Result**: The bot replies with a comprehensive "AwasBot-AI Forensic Report," including the risk score, a summary of the site's true intentions, and the captured screenshot.
+
+### Scenario 4: High-Risk Bank Transfer
 
 1. User initiates transfer via index.html
 2. Google reCAPTCHA Enterprise scores risk
@@ -216,7 +226,7 @@ fetch('https://YOUR-CLOUD-RUN-URL/check_status', ...)
    - Guardian can **Approve** or **Block** decision
 4. User sees real-time status update on portal
 
-### Scenario 4: Device Linking (Magic Link)
+### Scenario 5: Device Linking (Magic Link)
 
 1. User receives magic link: `awasbot.com/pair?phone={phone_number}`
 2. background.js intercepts the URL
@@ -446,11 +456,9 @@ Guardian gets alerts tied to this device
 ## 🔐 Privacy & Compliance
 
 ✅ **No personal data transmission** (phone numbers used for linking only)  
-✅ **Firestore encryption** at rest  
-✅ **GDPR-compliant** (user can request data deletion)  
+✅ **Firestore encryption** at rest   
 ✅ **Evidence vault** for legal compliance & incident review  
 ✅ **Guardian consent** required before linking  
-✅ **Screen overlay guard** for banking pages (monitors screen sharing)
 
 ---
 
@@ -470,19 +478,6 @@ Guardian gets alerts tied to this device
 ---
 
 ## 🛠️ Development & Testing
-
-### Local Testing (Python)
-
-```bash
-# Set up environment
-cd awasbot-project
-pip install -r requirements.txt
-export $(cat .env | xargs)
-
-# Test with ngrok (for webhooks)
-ngrok http 8080
-# Set Telegram webhook to https://your-ngrok-url/mainbot
-```
 
 ### Chrome Extension Testing
 
@@ -533,58 +528,11 @@ curl -X POST https://your-cloud-run-url/check-url \
 
 ### Scaling Considerations
 
-- **Firestore**: Auto-scales (no maintenance needed)
-- **Cloud Run**: Auto-scales based on concurrent requests; set `--memory=2Gi` for Playwright
-- **Playwright**: Memory-intensive; may need `--memory=4Gi` for heavy video processing
-- **Gemini API**: Rate limit 1,500 requests/minute (free tier); monitor usage
-- **VirusTotal**: Rate limit 4 requests/minute (free tier); consider paid plan
-
----
-
-## 🐛 Troubleshooting
-
-### "Connection Error" on Bank Portal
-
-1. Verify Cloud Run URL in index.html line ~240 is correct
-2. Check Cloud Run service is deployed and running:
-   ```bash
-   gcloud run services list --region asia-southeast1
-   ```
-
-### Deepfake Detection Not Working
-
-1. Verify Gemini API is enabled in GCP console
-2. Audio/video files must be < 25MB
-3. Check language append format: `get_lang_append(lang)` in main.py
-4. Ensure model is `gemini-3-flash-preview`
-
-### Guardian Not Receiving Alerts
-
-1. Verify Guardian ID is stored in Firestore `users` collection
-2. Check Guardian Bot webhook token is correctly set:
-   ```bash
-   curl https://api.telegram.org/bot{TELEGRAM_TOKEN_GUARDIAN}/getMe
-   ```
-3. User must have `/start`'ed the Guardian Bot
-4. Check Cloud Logs for SOS function errors
-
-### Chrome Extension URL Blocking Not Triggering
-
-1. Verify background.js line 1 has correct API endpoint
-2. Check user has saved phone number (via magic link in background.js lines 8-16)
-3. Verify manifest.json has correct host permissions
-4. Test manually:
-   ```bash
-   curl -X POST https://your-cloud-run-url/check-url \
-     -H "Content-Type: application/json" \
-     -d '{"url":"https://phishing.com","user_phone":"0123456789"}'
-   ```
-
-### Firestore Quota Exceeded
-
-1. Check Firestore usage in GCP console
-2. Consider upgrading to Firestore with automatic scaling
-3. Implement read/write quotas in Cloud Run environment
+- **Firestore**: Auto-scales globally (no database maintenance needed).
+- **Cloud Run**: Auto-scales based on concurrent requests; set `--memory=2Gi` minimum to support the Playwright headless browser.
+- **Playwright**: Memory-intensive during deep forensic URL scans. If concurrent user URL scans increase, consider bumping Cloud Run memory to `--memory=4Gi`.
+- **Gemini API**: The free tier handles 15 requests/minute and 1,500 requests/day. For a production rollout, a paid Google Cloud project is required to handle high-volume media processing.
+- **VirusTotal**: The free public API is strictly limited to 4 requests/minute. A premium enterprise key is required for live production traffic.
 
 ---
 
@@ -604,18 +552,17 @@ curl -X POST https://your-cloud-run-url/check-url \
 ## 🎓 Learning Path
 
 1. **Start Here**: Read this README
-2. **Understand Backend**: Review main.py in order:
-   - Configuration (lines 1-50)
-   - Traffic controller (lines 85-130)
-   - Guardian bot (lines 135-210)
-   - AI scanners (lines 215-450)
-   - Bank webhooks (lines 550-650)
-3. **Understand Frontend**: Review index.html reCAPTCHA flow
-4. **Understand Extension**: Review background.js interception logic
-5. **Deploy Locally**: Set up `.env` and test with ngrok
-6. **Deploy to Cloud**: Push to Cloud Run
-7. **Configure Clients**: Update bank portal URL + Chrome extension
-8. **Go Live**: Enable webhooks and monitor Cloud Logs
+2. **Understand Backend**: Review `main.py` in this order:
+   - Configuration & API Setup
+   - Traffic controller logic
+   - Guardian bot workflow
+   - AI scanners (Gemini & Web Risk)
+   - Bank webhooks & reCAPTCHA validation
+3. **Understand Frontend**: Review `index.html` reCAPTCHA flow
+4. **Understand Extension**: Review `background.js` interception logic
+5. **Deploy to Cloud**: Set up `.env` and push code directly to Google Cloud Run
+6. **Configure Clients**: Update bank portal API URLs + Chrome extension host permissions
+7. **Go Live**: Enable Telegram webhooks and monitor Cloud Logs
 
 ---
 
@@ -644,18 +591,14 @@ This human-in-the-loop approach prevents financial losses while respecting user 
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Future Roadmap 
 
-1. **Deploy backend** to Cloud Run (Asia-Southeast 1)
-2. **Configure Telegram webhooks** for main bot & guardian bot
-3. **Load Chrome extension** in dev mode
-4. **Update frontend URLs** in index.html and background.js
-5. **Test registration flow**: `/start` → name → phone → guardian ID
-6. **Test image scanning**: Send phishing screenshot → verify guardian gets SOS
-7. **Test browser protection**: Visit phishing site → verify blocking & guardian alert
-8. **Test bank transfer**: Submit high-risk transfer → watch guardian approval workflow
-9. **Monitor logs**: Check Cloud Logging for errors & incidents
-10. **Go live** with users in beta
+While AwasBot currently provides a robust MVP, our vision for a full production rollout includes:
+
+1. **📱 WhatsApp Integration**: Migrating the Telegram bot logic to the WhatsApp Business API, matching the primary communication channel for Southeast Asian senior citizens.
+2. **🏦 Open Banking Integration**: Moving beyond the mock portal to integrate directly with real banking APIs (in compliance with Bank Negara Malaysia guidelines) for automated fund freezing.
+3. **🍏 Mobile Safari Extension**: Porting the Chrome Extension logic to iOS Safari to protect elderly users who primarily browse the web on iPhones and iPads.
+4. **📊 Guardian Dashboard**: Building a centralized web app where family members can view weekly analytics of threats blocked across all connected devices.
 
 ---
 
