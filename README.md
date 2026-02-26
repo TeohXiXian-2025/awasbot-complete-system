@@ -591,17 +591,20 @@ This human-in-the-loop approach prevents financial losses while respecting user 
 
 ---
 
-## 🚀 Future Roadmap 
+## 🚀 Future Roadmap (Post-Hackathon Vision)
 
-While AwasBot currently provides a robust MVP, our vision for a full production rollout includes:
+While AwasBot currently provides a robust MVP, our vision for a full production rollout includes expanding into a comprehensive, multi-channel security ecosystem:
 
-1. **📱 WhatsApp Integration**: Migrating the Telegram bot logic to the WhatsApp Business API, matching the primary communication channel for Southeast Asian senior citizens.
-2. **🏦 Open Banking Integration**: Moving beyond the mock portal to integrate directly with real banking APIs (in compliance with Bank Negara Malaysia guidelines) for automated fund freezing.
-3. **🍏 Mobile Safari Extension**: Porting the Chrome Extension logic to iOS Safari to protect elderly users who primarily browse the web on iPhones and iPads.
-4. **📊 Guardian Dashboard**: Building a centralized web app where family members can view weekly analytics of threats blocked across all connected devices.
+1. **📱 WhatsApp Business Integration**: Migrating the bot logic to WhatsApp, providing frictionless onboarding on the primary communication channel used by Southeast Asian senior citizens.
+2. **🤖 Native Android System Shield**: Developing an Android application utilizing Accessibility APIs to automatically detect and intercept phishing links directly inside incoming SMS and third-party messaging apps.
+3. **🏦 Open Banking API Integration**: Moving beyond the mock portal to integrate directly with real banking frameworks (e.g., DuitNow, FPX) in compliance with central bank guidelines for automated, real-time fund freezing.
+4. **📞 Live Voice-Call Forensics**: Expanding our AI capabilities to monitor live phone calls, using real-time audio processing to detect AI voice cloning, deepfakes, and common scam-caller scripts.
+5. **📊 Family Guardian Dashboard**: Building a centralized web application where family members can view weekly threat analytics, manage security thresholds, and monitor the safety of multiple elderly relatives from a single screen.
 
 ---
 
 **Made with 🛡️ for Southeast Asian Financial Security**
+
+
 
 
