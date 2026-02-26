@@ -13,7 +13,7 @@ A comprehensive anti-scam platform combining AI threat detection, family guardia
 
 ### Key Features
 
-✅ **AI-Powered Threat Detection** (Google Gemini 3.5 Flash)  
+✅ **AI-Powered Threat Detection** (Google Gemini 3 Flash)  
 ✅ **Multi-Layer Security** (Google Web Risk + VirusTotal + Forensic Analysis)  
 ✅ **Real-Time Guardian Alerts** (Telegram SOS notifications)  
 ✅ **Deepfake Detection** (Audio & Video forensics)  
